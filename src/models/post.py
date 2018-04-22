@@ -41,7 +41,8 @@ class Post(object):
                                       query={'_id': id})  # Post.from_mongo('123') will give us the content with 'id' 123
 
         return cls(**post_data) #return the object element
-        ''' Is the same as the following code:
+        ''' 
+        Is the same as the following code:
         return cls(blog_id=post_data['blog_id'],
                    title=post_data['title'],
                    content=post_data['content'],

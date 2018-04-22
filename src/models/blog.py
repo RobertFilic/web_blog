@@ -45,8 +45,10 @@ class Blog(object):
         blog_data = Database.find_one(collection='blogs',
                                       query={'_id': id})
         # we return an OBJECT with relevant data
-        return cls(**blog_data)
+        return cls(**blog_data) # return the object element
+        '''
         return cls(author=blog_data['author'],
                    title=blog_data['title'],
                    description=blog_data['description'],
                    _id=blog_data['_id'])
+        '''
