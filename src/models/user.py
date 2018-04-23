@@ -1,14 +1,14 @@
 import uuid
-
+from flask import session
 from src.common.database import Database
+from src.models.blog import Blog
 
 
 class User(object):
     def __init__(self, email, password, _id=None):
         self. email = email
         self.password = password
-        self._id = uuid.uuid4().hex if _id is None else _id # assigning an ID to the user
-
+        self._id = uuid.uuid4().hex if _id is None else _id # assigning an ID to the user = user_id
     # Filter users by email
     @classmethod
     def get_by_email(cls, email):
@@ -41,17 +41,31 @@ class User(object):
             #if user doesn't exist, we can create it
             new_user = cls(email, password)
             new_user.save_to_mongo()
+            session['email'] = email # we input the email into Flask session which will manage the cookies
             return True
         else:
             #User exists :(
             return False
 
+    @staticmethod
+    def login(user_email):
+        session['email'] = user_email # Flask manages cookies for us. It understands when an existing user is logged and returns to the website
 
-    def login(self):
-        pass
+    @staticmethod
+    def logout():
+        session['email'] = None
+
+    def get_blog(self):
+        return Blog.find_by_author_id(self._id)
+
 
     def json(self):
-        pass
+        return {
+            "email": self.email,
+            "_id": self._id, # same as user_id
+            "password": self.password  # not safe!!
+        }
+
 
     def save_to_mongo(self):
-        pass
+        Database.insert("users", self.json())
