@@ -15,14 +15,14 @@ class User(object):
     # FILTER USERS BY EMAIL
     @classmethod
     def get_by_email(cls, email):
-        data = Database.find_one("user", {"email": email})
+        data = Database.find_one("users", {"email": email})
         if data is not None:
             return cls(**data)
 
-    # FITLER USERS BY ID/PASSOWRD
+    # FILTER USERS BY ID
     @classmethod
     def get_by_id(cls, _id):
-        data = Database.find_one("user", {"_id": _id})
+        data = Database.find_one("users", {"_id": _id})
         if data is not None:
             return cls(**data)
         # return None  this part is default in Python
@@ -31,8 +31,7 @@ class User(object):
     @staticmethod
     # Check if user's email matches the password they sent us
     def login_valid(email, password):
-        user = User.get_by_email(
-            email)  # if it finds the user in the database it will return an element, otherwise it will be None
+        user = User.get_by_email(email)  # if it finds the user in the database it will return an element, otherwise it will be None
         if user is not None:
             # Check the password
             return user.password == password  # compares password from database and the one entered in the website
@@ -55,8 +54,7 @@ class User(object):
     # LOGIN
     @staticmethod
     def login(user_email):
-        session[
-            'email'] = user_email  # Flask manages cookies for us. It understands when an existing user is logged and returns to the website
+        session['email'] = user_email  # Flask manages cookies for us. It understands when an existing user is logged and returns to the website
 
     # LOGOUT
     @staticmethod
@@ -64,7 +62,7 @@ class User(object):
         session['email'] = None
 
     # SEARCH USER'S BLOG
-    def get_blog(self):
+    def get_blogs(self):
         return Blog.find_by_author_id(self._id)
 
     # WRITE A NEW BLOG

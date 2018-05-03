@@ -54,6 +54,6 @@ class Post(object):
     # Finding all blog posts in specific blog
     @staticmethod
     def from_blog(id):
-        return Database.find(collection='posts', query={'blog_id': id})
-        # [post from post in Database.find(collection='post', query={'blog_id': id})] # we find all of the posts in specific id and returns a list of the posts
+        #return Database.find(collection='posts', query={'blog_id': id})
+        return [post for post in Database.find(collection='posts', query={'blog_id': id})] # we find all of the posts in specific id and returns a list of the posts
 
